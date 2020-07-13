@@ -29,8 +29,6 @@ TODO:
 //###
 #define RTOL  RCONST(1.0e-10)   /* scalar relative tolerance            */
 #define ATOL RCONST(1.0e-10)   /* vector absolute tolerance components */
-#define T0    RCONST(0.0)      /* initial time           */
-
 #define Ith(v,i)    NV_Ith_S(v,i)         /* Ith numbers components 0..NEQ-1 */
 #define IJth(sunMatrix,i,j) SM_ELEMENT_D(sunMatrix,i,j) /* IJth numbers rows,cols 0..NEQ-1 */
 
@@ -64,7 +62,7 @@ struct time_struct{
 };
 
 
-/* Parameters used to determine transition rates*/
+/* Parameters used to determine transition rates */
 struct transitionParams{
   int array_size; //Equal to the number of levels (i.e NEQ)
   double *A_array; //Holds Einstein's As
@@ -78,8 +76,6 @@ struct transitionParams{
   double *jbar_grid;
   int *nMaserWarnings;
 };
-
-
 
 /* Checks for errors when calling any CVode functions */
 int check_retval(void *returnvalue, const char *funcname, int opt)
@@ -866,7 +862,7 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
 
    //Radiation field using the Escape Probaility method
    if(par->useEP){ 
-   double tau, beta,jbar_EP,S_ratio,S_nu;
+   double tau, beta;
 
    density_t_mol(time, density); 
     for(li=0;li<md[ispec].nline;li++){
@@ -1149,6 +1145,7 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   retval = CVodeSetJacFn(cvode_mem, NULL);
   if(check_retval(&retval, "CVodeSetJacFn", 1)) return;
 
+  //We start at i=1 (instead of i=0) because time_struct.time[i] indicates the first output time, and we are starting the run from time = time_struct.time[0]
   for (i = 1; i < par->pIntensity; i++){
     retval = CVode(cvode_mem, time_struct.time[i], P, &t, CV_NORMAL);
     if(check_retval(&retval, "CVode", 1)) exit(0);
