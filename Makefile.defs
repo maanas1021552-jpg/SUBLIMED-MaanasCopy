@@ -1,0 +1,4 @@
+LIB_QHULL = qhullstatic
+CCFLAGS += -I/usr/include/cfitsio
+PYCCFLAGS = -I/home/mcordine/anaconda2/include/python2.7 -I/home/mcordine/anaconda2/include/python2.7 -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes
+PYLDFLAGS = -lpython2.7 -lpthread -ldl -lutil -lm -Xlinker -export-dynamic
