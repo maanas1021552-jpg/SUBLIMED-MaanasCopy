@@ -2,9 +2,9 @@
 
 SUBlimated Dynamical cometary gases in LIME
 
-This is the first working version of SUBLIME, a 3D Monte Carlo radiative transfer code for cometary comae, by Martin Cordiner and Miguel de Val Borro (2018). 
+This is the first working version of SUBLIMED, a 3D Monte Carlo radiative transfer code for cometary comae, by Martin Cordiner and Miguel de Val Borro (2018). 
 
-SUBLIME is based on LIME (LIne Modeling Engine) version 1.9.3 by Christian Brinch (2006-2014) and the LIME development team (2015-2018). Main changes from the original LIME code include (1) the addition of electron collision rates to the static matrix in solver.c; analytic electron densities and temperatures are generated at runtime in solver.c; (2) the raytracing routine in raytrace.c has been altered to provide sufficient (evenly-weighted) sampling in the central image pixels to account for the strong, compact, central brightness peak of the coma.
+SUBLIMED is based on LIME (LIne Modeling Engine) version 1.9.3 by Christian Brinch (2006-2014) and the LIME development team (2015-2018). Main changes from the original LIME code include (1) the addition of electron collision rates to the static matrix in solver.c; analytic electron densities and temperatures are generated at runtime in solver.c; (2) the raytracing routine in raytrace.c has been altered to provide sufficient (evenly-weighted) sampling in the central image pixels to account for the strong, compact, central brightness peak of the coma.
 
 Example input and output files are given in the example/ folder.
 
