@@ -1,6 +1,6 @@
-# SUBLIME
+# SUBLIMED
 
-SUBlimated cometary gases in LIME
+SUBlimated Dynamical cometary gases in LIME
 
 This is the first working version of SUBLIME, a 3D Monte Carlo radiative transfer code for cometary comae, by Martin Cordiner and Miguel de Val Borro (2018). 
 
