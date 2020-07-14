@@ -788,12 +788,13 @@ Note that this is called from within the multi-threaded block.
 void
 getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *par, int NEQ, double A[NEQ-1], double *p, double time, struct time_struct time_struct, double *jbar_grid, double *Pops, int *nMaserWarnings){
   int ipart,iline,k,l,ti, li, upper, lower, j;
-  double radius, rnuc, Te, vexp, ne, aij, sigmaij, ve, bessel, ceij, gij, ceji, density;
+  double radius, rnuc, Te, vexp, ne, aij, sigmaij, ve, bessel, ceij, gij, ceji, dens[md[ispec].npart];
   double jbar[par->pIntensity];
 
   rnuc = par->minScale;
   vexp = sqrt(gp[id].vel[0]* gp[id].vel[0]+gp[id].vel[1]*gp[id].vel[1]+gp[id].vel[2]*gp[id].vel[2]);
-  density_t_h2o(time,density);
+  radius = vexp*time + rnuc;
+  density(radius,0.0,0.0,dens);
 
   if(time<time_struct.time[0])
     time = time_struct.time[0];
@@ -825,15 +826,14 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
       double up = down*md[ispec].gstat[part.lcu[ti]]/md[ispec].gstat[part.lcl[ti]]\
                 *exp(-HCKB*(md[ispec].eterm[part.lcu[ti]]-md[ispec].eterm[part.lcl[ti]])/gp[id].t[0]);
 
-      p[part.lcu[ti] * NEQ + part.lcl[ti]] = p[part.lcu[ti] * NEQ + part.lcl[ti]] + down*density;
-      p[part.lcl[ti] * NEQ + part.lcu[ti]] = p[part.lcl[ti] * NEQ + part.lcu[ti]] + up*density;
+      p[part.lcu[ti] * NEQ + part.lcl[ti]] = p[part.lcu[ti] * NEQ + part.lcl[ti]] + down*dens[ipart];
+      p[part.lcl[ti] * NEQ + part.lcu[ti]] = p[part.lcl[ti] * NEQ + part.lcu[ti]] + up*dens[ipart];
     }
 
   }
   
   /*GENERATE ELECTRON COLLISIONAL RATES (only for gas 0) AND ADD TO MATRIX*/
   /*Formalism of Zakharov et al. (2007)*/
-   radius = vexp*time + rnuc;
    Te = Telec(radius,par->Qwater,gp[id].t[0]);
    ne = nelec(radius,par->Qwater,vexp,Te,par->rHelio,par->xne);
    
@@ -862,15 +862,15 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
 
    //Radiation field using the Escape Probaility method
    if(par->useEP){ 
-   double tau, beta;
+   double tau, beta, molDens[par->nSpecies];
 
-   density_t_mol(time, density); 
+   molNumDensity(radius,0.0,0.0, molDens); 
     for(li=0;li<md[ispec].nline;li++){
       upper=md[ispec].lau[li];
       lower=md[ispec].lal[li];
 
       //Calculating the optical depth
-      tau = ((A[li]*pow(CLIGHT,3))/(8*PI*pow(md[ispec].freq[li],3))) * ((md[ispec].gstat[upper]/md[ispec].gstat[lower])*Pops[lower] - Pops[upper]) * ((density* radius)/vexp);
+      tau = ((A[li]*pow(CLIGHT,3))/(8*PI*pow(md[ispec].freq[li],3))) * ((md[ispec].gstat[upper]/md[ispec].gstat[lower])*Pops[lower] - Pops[upper]) * ((molDens[ispec]* radius)/vexp);
 
       if (tau > 0.0 && tau<1e-8 ||tau == 0.0)
         beta = 1.0;
