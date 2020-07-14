@@ -9,8 +9,6 @@ double tkin = 50.;
 double rnuc = 2.5e2;
 double abund = 0.001;
 
-double pi = 3.14159265358979323846;
-
 /******************************************************************************/
 
 void
@@ -18,7 +16,6 @@ input(inputPars *par, image *img){
 /*
  * Basic parameters. See cheat sheet for details.
  */
-  par->beta         = beta;
   par-> useEP       = 0;
   par->Qwater       = Qwater;
   par -> xne = 0.2;
@@ -54,7 +51,6 @@ input(inputPars *par, image *img){
 
 /******************************************************************************/
 
-
 void
 density(double x, double y, double z, double *density){
 /*
@@ -75,33 +71,7 @@ density(double x, double y, double z, double *density){
   if(r<rMin)
     density[0] = 1e-20; /* Just to prevent overflows at r==0! */
   else
-    density[0] = Qwater /(4*pi*pow(r, 2)*vexp)*exp(-r*beta/vexp);
-}
-
-/******************************************************************************/
-
-void 
-density_t_h2o(double time, double density){
-  double r =vexp*time + rnuc;
-  const double rMin = rnuc; /* This cutoff should be chosen smaller than par->minScale but greater than zero (to avoid a singularity at the origin). */
-
-  if(r<rMin)
-    density = 1e-20; /* Just to prevent overflows at r==0! */
-  else
-    density = (Qwater /(4*PI*pow(r, 2)*vexp)*exp(-r*beta/vexp));
-}
-
-/******************************************************************************/
-
-void 
-density_t_mol(double time, double density){
-  double r =vexp*time + rnuc;
-  const double rMin = rnuc; /* This cutoff should be chosen smaller than par->minScale but greater than zero (to avoid a singularity at the origin). */
-
-  if(r<rMin)
-    density = 1e-20; /* Just to prevent overflows at r==0! */
-  else
-    density = (Qwater*abund/(4*PI*pow(r, 2)*vexp)*exp(-r*betahcn/vexp));
+    density[0] = Qwater /(4*PI*pow(r, 2)*vexp)*exp(-r*beta/vexp);
 }
 
 /******************************************************************************/
@@ -133,7 +103,7 @@ molNumDensity(double x, double y, double z, double *nmol){
   if(r<rMin)
     nmol[0] = 0.;
   else
-    nmol[0] =abund*Qwater/(4*pi*pow(r, 2)*vexp)*exp(-r*betahcn/vexp);
+    nmol[0] =abund*Qwater/(4*PI*pow(r, 2)*vexp)*exp(-r*betahcn/vexp);
 }
 
 /******************************************************************************/
