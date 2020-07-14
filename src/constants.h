@@ -18,7 +18,7 @@
 #define KBOLTZ          1.38064852e-23       /* Boltzmann constant           [J/K]		*/
 #define YJULIAN         (365.25*24.0*3600.0) /* Length of the Julian year    [s]		*/
 #define STEFANB         5.670367e-8          /* Stefan-Boltzmann constant    [W/m^2/K^4]	*/
-#define PI              3.14159265358979323846 /* Mathematical const i       []         */
+#define PI              3.14159265358979323846 /* Mathematical constant pi   []         */
 #define ELEC_MASS       9.10938356e-31       /*Electron mass                 [kg]       */
 #define ELEC_CHARGE     1.6021766208e-19     /*Electron charge               [C]        */
 #define EPS_0           8.854187817620389e-12 /*Permitivity of free space    [m-3 kg-1 s4 A2] */
