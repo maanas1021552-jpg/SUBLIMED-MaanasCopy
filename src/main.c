@@ -35,7 +35,6 @@ initParImg(inputPars *par, image **img)
   par->sinkPoints= 0;
   par->Qwater    = 0;
   par->rHelio    = 0; 
-  par-> beta     = 0;
 
   /* Set default values for optional parameters */
   par->dust  	    = NULL;
