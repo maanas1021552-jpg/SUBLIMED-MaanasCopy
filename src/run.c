@@ -349,7 +349,6 @@ Copy over user-set parameters to the configInfo versions. (This seems like dupli
   par->xne               = inpars.xne;
   par->colliScale        = inpars.colliScale;
   par->girScale          = inpars.girScale;
-  par->beta              = inpars.beta;
   par->useEP             = inpars.useEP;
 
   /* Somewhat more carefully copy over the strings:
