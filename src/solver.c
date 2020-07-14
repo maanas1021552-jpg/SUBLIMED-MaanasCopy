@@ -877,10 +877,10 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
       else if (tau>0.0)
         beta = (2/(3*tau)) - exp(-tau/2)*(tau*(gsl_sf_bessel_Kn(2,tau/2)-gsl_sf_bessel_K1(tau/2))/3 -  gsl_sf_bessel_K1(tau/2)); 
       else if (tau<=0.0)
-        if(tau < -MAX_NEG_OPT_DEPTH){
-          nMaserWarnings[id]++;
-          tau = -MAX_NEG_OPT_DEPTH;
-        }
+        // if(tau < -MAX_NEG_OPT_DEPTH){
+        //   nMaserWarnings[id]++;
+        //   tau = -MAX_NEG_OPT_DEPTH;
+        // }
         beta = (1 - exp(-tau)) / tau;
       
 
