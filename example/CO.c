@@ -1,7 +1,7 @@
 #include "lime.h"
 
 double beta= 1.042e-5;
-double betaCO= 7.5e-7;
+double betamol= 7.5e-7;
 
 double vexp = 700.;
 double Qwater = 1e29;
@@ -18,7 +18,6 @@ input(inputPars *par, image *img){
 /*
  * Basic parameters. See cheat sheet for details.
  */
-  par->beta         = beta;
   par-> useEP       = 0;
   par->Qwater       = Qwater;
   par -> xne = 0.2;
@@ -114,7 +113,7 @@ molNumDensity(double x, double y, double z, double *nmol){
   if(r<rMin)
     nmol[0] = 0.;
   else
-    nmol[0] =abund*Qwater/(4*pi*pow(r, 2)*vexp)*exp(-r*betaCO/vexp);
+    nmol[0] =abund*Qwater/(4*pi*pow(r, 2)*vexp)*exp(-r*betamol/vexp);
 }
 
 /******************************************************************************/
@@ -144,6 +143,3 @@ velocity(double x, double y, double z, double *vel){
   vel[1]=vexp*sin(theta)*sin(phi);
   vel[2]=vexp*cos(theta);
 }
-
-
-
