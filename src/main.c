@@ -44,7 +44,7 @@ initParImg(inputPars *par, image **img)
   par->pregrid      = NULL;
   par->restart      = NULL;
   par->gridInFile   = NULL;
-  par ->useEP       = 0;
+  par ->useEP       = 1;
   
   par->collPartIds  = malloc(sizeof(int)*MAX_N_COLL_PART);
   for(i=0;i<MAX_N_COLL_PART;i++) par->collPartIds[i] = 0; /* Possible values start at 1. */
@@ -71,7 +71,7 @@ initParImg(inputPars *par, image **img)
   par->antialias=1;
   par->polarization=0;
   par->nThreads = NTHREADS;
-  par->nSolveIters=0;
+  par->nSolveIters=1;
   par->traceRayAlgorithm=0;
   par->resetRNG=0;
   par->doSolveRTE=0;
