@@ -34,9 +34,6 @@ endif
 ifneq (,$(wildcard /usr/local/lib/.))
     LIBS += -L/usr/local/lib
 endif
-ifneq (,$(wildcard /data/Apps/cvode/instdir/lib64/.))
-    LIBS += -L/data/Apps/cvode/instdir/lib64
-endif
 
 CPPFLAGS += -I${PREFIX}/include \
 	    -I${PREFIX}/include/libqhull \
@@ -44,7 +41,6 @@ CPPFLAGS += -I${PREFIX}/include \
 	    -I${HOME}/include \
 	    -I/opt/local/include \
 	    -I/sw//include \
-	    -I/data/Apps/cvode/instdir/include \
 	    ${EXTRACPPFLAGS}
 
 
@@ -56,13 +52,11 @@ include Makefile.srcs
 ##
 
 TARGET  = lime.x # Overwritten in usual practice by the value passed in by the 'lime' script.
-CC	= gcc -fopenmp
 MODELS  = model.c # Overwritten in usual practice by the value passed in by the 'lime' script.
 MODELO 	= ${srcdir}/model.o
 
 CCFLAGS += -O3 -falign-loops=16 -fno-strict-aliasing
-LDFLAGS += -lgsl -lgslcblas -l${LIB_QHULL} -lcfitsio -lncurses -lsundials_cvode -lsundials_nvecserial -lsundials_nvecmanyvector -lsundials_cvode -lsundials_nvecserial -lsundials_nvecmanyvector -lm
-LINKFLAGS = -Wl,-rpath,/data/Apps/cvode/instdir/lib64 
+LDFLAGS += -lgsl -lgslcblas -l${LIB_QHULL} -lcfitsio -lncurses -lsundials_cvode -lsundials_nvecserial -lsundials_nvecmanyvector -lm
 
 ifeq (${DOTEST},yes)
   CCFLAGS += -DTEST
@@ -102,7 +96,7 @@ all:: ${TARGET}
 	${CC} ${CCFLAGS} ${CPPFLAGS} -o $@ -c $<
 
 ${TARGET}: ${OBJS} ${MODELO} 
-	${CC} -o $@ $^ ${LIBS} ${LDFLAGS} ${LINKFLAGS}
+	${CC} -o $@ $^ ${LIBS} ${LDFLAGS}
 
 ${OBJS} : ${INCS}
 ${PYOBJS} : ${PYINCS}
@@ -110,13 +104,6 @@ ${CONV_OBJS} : ${CONVINCLUDES}
 
 ${MODELO}: ${INCS}
 	${CC} ${CCFLAGS} ${CPPFLAGS} -o ${MODELO} -c ${MODELS}
-
-pylime: CCFLAGS += ${PYCCFLAGS}
-pylime: CPPFLAGS += -DNO_NCURSES -DIS_PYTHON
-pylime: LDFLAGS += ${PYLDFLAGS}
-
-pylime: ${PYOBJS}
-	${CC} -o $@ $^ ${LIBS} ${LDFLAGS}
 
 gridconvert : CPPFLAGS += -DNO_NCURSES
 
@@ -136,10 +123,7 @@ objclean::
 limeclean:: objclean
 	rm -f ${TARGET}
 
-pyclean:: objclean
-	rm -f ${pydir}/*.pyc pylime
-
-clean:: objclean pyclean
+clean:: objclean
 	rm -f gridconvert
 	rm -f *~ ${srcdir}/*~
 
