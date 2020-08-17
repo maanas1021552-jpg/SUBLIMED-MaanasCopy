@@ -1,3 +1,11 @@
 Create MODIFICATIONS.txt file
 
 Modify README.md
+
+***************************
+New functionality required:
+***************************
+
+1. Enable coma asymmetry. Required changes will include the ability to specify n angular (conical) regions with unique outflow 
+velocity and production rate. CVODE will therefore need to be called n times, and the resulting populations from each run need to 
+be assigned to the relevant grid cells (within each respective predefined conical region), before raytracing. 
