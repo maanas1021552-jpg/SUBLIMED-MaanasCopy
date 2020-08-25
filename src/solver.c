@@ -872,7 +872,7 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
       //Calculating the optical depth
       tau = ((A[li]*pow(CLIGHT,3))/(8*PI*pow(md[ispec].freq[li],3))) * ((md[ispec].gstat[upper]/md[ispec].gstat[lower])*Pops[lower] - Pops[upper]) * ((molDens[ispec]* radius)/vexp);
 
-      if (tau > 0.0 && tau<1e-8 ||tau == 0.0)
+      if ((tau > 0.0 && tau<1e-8) ||tau == 0.0)
         beta = 1.0;
       else if (tau>0.0)
         beta = (2/(3*tau)) - exp(-tau/2)*(tau*(gsl_sf_bessel_Kn(2,tau/2)-gsl_sf_bessel_K1(tau/2))/3 -  gsl_sf_bessel_K1(tau/2)); 
@@ -913,7 +913,7 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
 
   else{
     double jbar_time;
-    int index;
+    int index = time_struct.time[par->pIntensity-1];
     double x0, x1, y0, y1;
 
     for(li=0;li<md[ispec].nline;li++){
@@ -1026,13 +1026,14 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   , struct blendInfo blends, int *nextMolWithBlend, gridPointData **mp\
   , double **halfFirstDs, int *nMaserWarnings){
 
-  int id, index;
+  int id;
   realtype reltol, t;
   N_Vector P, abstol;
   SUNMatrix sunMatrix;
   SUNLinearSolver LS;
   void *cvode_mem;
-  int retval, retvalr, iout, i,j,k;
+  int i,j;
+  int retval;
 
   gsl_vector *newpop = gsl_vector_alloc(md[ispec].nlev);
 
@@ -1050,7 +1051,6 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
     timearr[id] = getTime(gp,id,par);
     sorted_timearr[id] = timearr[id]; //Note: not sorted yet
   }
-
   //Sorting time array so that each grid point can be matched to its corresponding time
   qsort(sorted_timearr, par->pIntensity, sizeof(double), compare);
 
@@ -1065,8 +1065,7 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
       if(current==timearr[j])
         time_struct.id[i] = j; //holds sorted ids according to the time(radius) of its corresponding gridpoint
   }
-
-  double jbar_grid[par->pIntensity][md[ispec].nline];
+  double (*jbar_grid)[md[ispec].nline] = malloc(sizeof(double[par->pIntensity][md[ispec].nline]));
 
   if(!par->useEP){
     for(id=0;id<par->pIntensity;id++)
@@ -1076,7 +1075,6 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
       for(j=0;j<md[ispec].nline;j++)
         jbar_grid[i][j] = mp[time_struct.id[i]][ispec].jbar[j];
   }
-
   /*Initializing Pops */
   for(i=0;i<md[ispec].nlev;i++)
     Pops[i] = gp[time_struct.id[0]].mol[ispec].pops[i]; //we use gp[time_struct.id[0]] since we only need to initialize the level populations for the initial time
@@ -1179,6 +1177,7 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   SUNMatDestroy(sunMatrix);
   
   gsl_vector_free(newpop);
+  free(jbar_grid);
 }
 
 
@@ -1186,16 +1185,13 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
 int
 levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *lamtab, double *kaptab, const int nEntries){
 
-  int id,iter,ilev,ispec,c=0,n,i,nVerticesDone,nItersDone,nlinetot,nExtraSolverIters=0;
-  double percent=0.,*median,result1=0,result2=0,snr,delta_pop,progFraction;
+  int id,ispec,i,nVerticesDone,nItersDone,nlinetot;
   int totalNMaserWarnings=0;
-  struct statistics { double *pop, *ave, *sigma; } *stat;
   const gsl_rng_type *ranNumGenType = gsl_rng_ranlxs2;
   struct blendInfo blends;
-  gsl_error_handler_t *defaultErrorHandler=NULL;
-  int RNG_seeds[par->nThreads];
   char message[STR_LEN_0];
-
+  int RNG_seeds[par->nThreads];
+  gsl_error_handler_t *defaultErrorHandler=NULL;
   int nextMolWithBlend[par->pIntensity],nMaserWarnings[par->pIntensity];
   for(id=0;id<par->pIntensity;id++){
     nMaserWarnings[id] = 0;
@@ -1212,7 +1208,6 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
 
    /* Non-LTE */
   else{
-   stat=malloc(sizeof(struct statistics)*par->pIntensity);
 
     /* Random number generator */
     gsl_rng *ran = gsl_rng_alloc(ranNumGenType);
@@ -1271,7 +1266,6 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
         mp[id][ispec].vfac = malloc(sizeof(double)*                gp[id].nphot);
         mp[id][ispec].vfac_loc = malloc(sizeof(double)*            gp[id].nphot);
       }
-
       if(gp[id].dens[0] < 0 && gp[id].t[0] < 0){
         printf("\nError on grid point = %d\n, aborting", id);
         exit(1);
@@ -1280,7 +1274,6 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
         calculateJBar(id,gp,md,threadRans[id],par,nlinetot,blends,mp[id],halfFirstDs[id],&nMaserWarnings[id]);
       }
     }
-
     for(ispec=0;ispec<par->nSpecies;ispec++){
       solveStatEq(gp,md,ispec,par,blends,nextMolWithBlend,mp,halfFirstDs, nMaserWarnings); 
       for(i=0;i<par->pIntensity;i++)
