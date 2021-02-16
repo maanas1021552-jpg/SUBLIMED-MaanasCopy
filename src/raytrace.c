@@ -1331,7 +1331,7 @@ How to calculate this distance? Well if we have N points randomly but evenly dis
         xs[i] += gp[gi].x[di]*img[im].rotMat[di][i];
       }
     }
-    if(abs(xs[0])>pixelSize*nsupsamppix || abs(xs[1])>pixelSize*nsupsamppix){
+    if(fabs(xs[0])>pixelSize*nsupsamppix || fabs(xs[1])>pixelSize*nsupsamppix){
       assignRayOnImage(xs, pixelSize, imgCentreXPixels, imgCentreYPixels, img, im, maxNumRaysPerPixel, rays, &numActiveRaysInternal);
       }
 } /* End loop 1, over grid points. */
