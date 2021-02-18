@@ -337,10 +337,10 @@ doBaryInterp(const intersectType intcpt, struct grid *gp\
   /*
 The present routine takes (i) N values V_i at the vertices of a simplex, and (ii) the barycentric coordinates of a point, and returns a linear interpolation of the vertex values for the point location. This is essentially the same technique as the use of linear shape functions in Finite Element analysis. The idea is that if you define N shape functions Q_i, the ith shape function having the property that it is zero-valued at each of the vertices except the ith, and has value unity there, then the interpolation value at point r_ is given by
 
-	       _N
-	       \
-	f(r_) =  >    V_i*Q_i(r_).
-	       /_i=1
+         _N
+         \
+  f(r_) =  >    V_i*Q_i(r_).
+         /_i=1
 
 For a linear interpolation, each shape function Q_i(r_) is in fact just equal to the ith barycentric coordinate B_i of r_.
 
@@ -492,11 +492,11 @@ In this function we take (vector) velocities at 4 locations describing a tetrahe
 
 This is similar to doBaryInterp() except that a quadratic interpolation is done rather than a linear one. For this we need values not just at the N vertices but also half-way along the N(N-1)/2 edges. The shape function Q_i which has value unity at the ith vertex and zero at all the other vertices, and also at the half-edge points, is given by
 
-	Q_i(r_) = B_i(2*B_i - 1).
+  Q_i(r_) = B_i(2*B_i - 1).
 
 For the point ij half-way between vertices i and j the appropriate shape function is
 
-	Q_ij(r_) = 4*B_i*B_j.
+  Q_ij(r_) = 4*B_i*B_j.
 
 The interpolated value at r_ is, as before, the sum of the values at the vertices and the half-edge points, each multiplied by its associated shape function.
 
@@ -526,13 +526,13 @@ This function is supplied with values of velocity at the beginning, end and midp
 
 Given y0, y1 and y2 at x0, x1 and x2, the Lagrange interpolating polynomial is
 
-	         x-x1    x-x2         x-x0    x-x2         x-x0    x-x1
-	y ~ y0*-------*------- + y1*-------*------- + y2*-------*-------.
-	        x0-x1   x0-x2        x1-x0   x1-x2        x2-x0   x2-x1
+           x-x1    x-x2         x-x0    x-x2         x-x0    x-x1
+  y ~ y0*-------*------- + y1*-------*------- + y2*-------*-------.
+          x0-x1   x0-x2        x1-x0   x1-x2        x2-x0   x2-x1
 
 If we calculate x as a fractional value along the line segment then, for the y values we have in hand, this reduces to
 
-	y ~ y0*(x-1)*(2x-1) + y1*x*(2x-1) + y2*4x*(1-x).
+  y ~ y0*(x-1)*(2x-1) + y1*x*(2x-1) + y2*4x*(1-x).
 
 ***** Appears to be unused.
   */
@@ -555,13 +555,13 @@ This function is supplied with values of y at the beginning, end and midpoint of
 
 Given y0, y1 and y2 at x0, x1 and x2, the Lagrange interpolating polynomial is
 
-	         x-x1    x-x2         x-x0    x-x2         x-x0    x-x1
-	y ~ y0*-------*------- + y1*-------*------- + y2*-------*-------.
-	        x0-x1   x0-x2        x1-x0   x1-x2        x2-x0   x2-x1
+           x-x1    x-x2         x-x0    x-x2         x-x0    x-x1
+  y ~ y0*-------*------- + y1*-------*------- + y2*-------*-------.
+          x0-x1   x0-x2        x1-x0   x1-x2        x2-x0   x2-x1
 
 If x is the fractional distance along the line segment, then for the y values we have in hand, this reduces to
 
-	y ~ y0*(x-1)*(2x-1) + y1*x*(2x-1) + y2*4x*(1-x).
+  y ~ y0*(x-1)*(2x-1) + y1*x*(2x-1) + y2*4x*(1-x).
 
 Note that this is called from within the multi-threaded block.
   */
@@ -966,16 +966,16 @@ assignRayOnImage(double x[2], const double size, const double imgCentreXPixels\
   , const int maxNumRaysPerPixel, rayData *rays, int *numActiveRays){
   /*
 The present function does several things, as follows:
-	- Calculates the image position in pixel coordinates of the proposed ray position specified by x[].
-	- If the proposed ray is inside the image bounds, and the count of rays for that image pixel does not exceed the maximum allowed, the function:
-	  * adds 1 to the count of rays for that pixel of the image.
-	  * increments *numActiveRays;
-	  * stores information for the new ray in rays[*numActiveRays].
+  - Calculates the image position in pixel coordinates of the proposed ray position specified by x[].
+  - If the proposed ray is inside the image bounds, and the count of rays for that image pixel does not exceed the maximum allowed, the function:
+    * adds 1 to the count of rays for that pixel of the image.
+    * increments *numActiveRays;
+    * stores information for the new ray in rays[*numActiveRays].
 
 Returned information is thus:
-	- An updated array img[im].pixel[ppi].numRays.
-	- An updated list of accepted rays.
-	- An updated value of *numActiveRays.
+  - An updated array img[im].pixel[ppi].numRays.
+  - An updated list of accepted rays.
+  - An updated value of *numActiveRays.
   */
 
   int xi,yi,ichan;
@@ -1012,9 +1012,9 @@ void calcTriangleBaryCoords(double vertices[3][2], double x, double y, double ba
   /*
 The barycentric coordinates (L0,L1,L2) of a point r[] in a triangle v[] are given by
 
-	(v[0][0]-v[2][0]  v[1][0]-v[2][0]) (L0)   (r[0]-v[2][0])
-	(                                )*(  ) = (            ),
-	(v[0][1]-v[2][1]  v[1][1]-v[2][1]) (L1)   (r[1]-v[2][1])
+  (v[0][0]-v[2][0]  v[1][0]-v[2][0]) (L0)   (r[0]-v[2][0])
+  (                                )*(  ) = (            ),
+  (v[0][1]-v[2][1]  v[1][1]-v[2][1]) (L1)   (r[1]-v[2][1])
 
 with L2 = 1 - L0 - L1.
   */
@@ -1212,13 +1212,12 @@ Note that the argument 'md', and the grid element '.mol', are only accessed for 
   const double epsilon = 1.0e-6; // Needs thinking about. Double precision is much smaller than this.
   const int nStepsThruCell=10;
   const double oneOnNSteps=1.0/(double)nStepsThruCell;
-  const int nsupsamppix = 3; // Number of pixels (in x,y) from origin in which to do cartesian supersampling
-  const int supsamp = 15; // Number of rays per pixel (in x,y) for central pixel super-sampling
 
 
   double pixelSize,oneOnNumActiveRaysMinus1,imgCentreXPixels,imgCentreYPixels,minfreq,absDeltaFreq,x,xs[2],sum,oneOnNumRays;
   unsigned int totalNumImagePixels,ppi,numPixelsForInterp;
   int ichan,numCircleRays,numActiveRaysInternal,numActiveRays,lastChan;
+  int pixoff,pixoff2,pixshiftx,pixshifty,shift,nsupsamppix;
   int gi,molI,lineI,i,di,xi,yi,ri,vi,ei,i0,i1,j;
   int cmbMolI,cmbLineI;
   rayData *rays;
@@ -1318,6 +1317,24 @@ How to calculate this distance? Well if we have N points randomly but evenly dis
     numCircleRays = 0;
   }
 
+  const int supsamp = 20; // Number of rays per pixel (supsamp * supsamp in x,y plane)
+  scale = pixelSize/((double)supsamp);
+  
+  if(img[im].pxls % 2 != 0){
+  // If there is an odd number of image pixels, supersample the innermost nsupsamppix x nsupsamppix region:
+      nsupsamppix = 5; 
+      shift = (pixelSize/2.0) + (scale/2.0);
+      pixoff = 1;
+      pixoff2 = 0;
+      printf("odd\n");
+  }else{
+  // If there is an even number of image pixels, supersample the innermost nsupsamppix x nsupsamppix region:
+      nsupsamppix = 4;
+      shift = (scale/2.0);
+      pixoff = 0;
+      pixoff2 = 1;
+  }
+
   /* The following is the first of the 3 main loops in raytrace. Here we loop over the (internal or non-sink) grid points. We're doing 2 things: loading the rotated, projected coordinates into the rays list, and counting the rays per image pixel.
   */
   rays = malloc(sizeof(rayData)*(par->pIntensity+numCircleRays+pow((2*nsupsamppix*supsamp)-1,2))); /* We may need to reallocate this later. */
@@ -1336,15 +1353,23 @@ How to calculate this distance? Well if we have N points randomly but evenly dis
       }
 } /* End loop 1, over grid points. */
 
- /* Add extra rays for the central pixels */
-  scale = pixelSize/supsamp;
-   for(j=1-(nsupsamppix*supsamp);j<(nsupsamppix*supsamp);j++){
-     for(i=1-(nsupsamppix*supsamp);i<(nsupsamppix*supsamp);i++){
-       xs[0] = j*scale;
-       xs[1] = i*scale;
-       assignRayOnImage(xs, pixelSize, imgCentreXPixels, imgCentreYPixels, img, im, maxNumRaysPerPixel, rays, &numActiveRaysInternal);
-     }
-   }
+  /* Add extra rays for the central pixels */
+  for (pixshiftx = (pixoff - nsupsamppix) / 2; pixshiftx <= (nsupsamppix - pixoff - pixoff2) / 2; pixshiftx++) {
+    for (pixshifty = (pixoff - nsupsamppix) / 2; pixshifty <= (nsupsamppix - pixoff - pixoff2) / 2; pixshifty++) {
+      // Subtract the central rays from the supersampled pixels by setting them back to zero
+      xi = pixshiftx + (img[im].pxls - pixoff) / 2;
+      yi = pixshifty + (img[im].pxls - pixoff) / 2;
+      ppi = yi * img[im].pxls + xi;
+
+      for (j = 1; j <= supsamp; j++) {
+        for (i = 1; i <= supsamp; i++) {
+          xs[0] = (j * scale) - shift + (pixshiftx * pixelSize);
+          xs[1] = (i * scale) - shift + (pixshifty * pixelSize);
+          assignRayOnImage(xs, pixelSize, imgCentreXPixels, imgCentreYPixels, img, im, maxNumRaysPerPixel, rays, &numActiveRaysInternal);
+        }
+      }
+    }
+  }
 
   /* Add the circle rays:
   */
@@ -1368,13 +1393,13 @@ How to calculate this distance? Well if we have N points randomly but evenly dis
     delaunay(DIM, gp, (unsigned long)par->ncell, 1, 0, &dc, &numCells); /* mallocs dc if getCells==T */
     /*
 Required elements of gp:
-		.id
-		.x
+    .id
+    .x
 
 Sets elements of gp:
-		.sink
-		.numNeigh
-		.neigh
+    .sink
+    .numNeigh
+    .neigh
     */
 
 //**** Actually we can figure out the cell geometry from the grid neighbours.
