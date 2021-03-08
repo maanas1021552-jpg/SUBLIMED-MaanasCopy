@@ -860,8 +860,8 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
             p[l * NEQ + k] = p[l * NEQ + k] + md[ispec].gir[l*md[ispec].nlev+k];
         }
 
-   //Radiation field using the Escape Probaility method
-   if(par->useEP){ 
+   //Radiation trapping using the Escape Probaility method
+   if(par->useEP==1){ 
    double tau, beta, molDens[par->nSpecies];
 
    molNumDensity(radius,0.0,0.0, molDens); 
@@ -879,16 +879,25 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
         beta = (2/(3*tau)) - exp(-tau/2)*(tau*(gsl_sf_bessel_Kn(2,tau/2)-gsl_sf_bessel_K1(tau/2))/3 -  gsl_sf_bessel_K1(tau/2)); 
       }else if (tau<0.0){ 
         beta = (1 - exp(-tau)) / tau;
-      }      
+      }
+      
+      printf("beta = %.5f\n",beta);    
 
       p[upper * NEQ + lower] = p[upper * NEQ + lower] + A[li]*beta;
 
     }//end for
   }//end if
 
-  //Calculating radiation field using full 3D treatment and photon propagation
-  else{
-
+  //No photon trapping simulation
+  else if(par->useEP==0){
+    for(li=0;li<md[ispec].nline;li++){
+      upper=md[ispec].lau[li];
+      lower=md[ispec].lal[li];
+      p[upper * NEQ + lower] = p[upper * NEQ + lower] + A[li];
+    }
+  
+  //Calculate photon trapping self-consistently, using full 3D treatment of radiation field, and photon propagation
+  }else if(par->useEP==2){
    if(time <= time_struct.time[0]){
     for(li=0;li<md[ispec].nline;li++){
       upper=md[ispec].lau[li];
@@ -1056,7 +1065,7 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   }
   double (*jbar_grid)[md[ispec].nline] = malloc(sizeof(double[par->pIntensity][md[ispec].nline]));
 
-  if(!par->useEP){
+  if(par->useEP==2){
     for(id=0;id<par->pIntensity;id++)
       updateJBar(id,md,gp,ispec,par,blends,nextMolWithBlend[id],mp[id],halfFirstDs[id]);
 
@@ -1259,7 +1268,7 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
         printf("\nError on grid point = %d\n, aborting", id);
         exit(1);
       }
-      else if (!par->useEP){
+      else if (par->useEP==2){
         calculateJBar(id,gp,md,threadRans[id],par,nlinetot,blends,mp[id],halfFirstDs[id],&nMaserWarnings[id]);
       }
     }

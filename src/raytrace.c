@@ -1326,7 +1326,6 @@ How to calculate this distance? Well if we have N points randomly but evenly dis
       shift = (pixelSize/2.0) + (scale/2.0);
       pixoff = 1;
       pixoff2 = 0;
-      printf("odd\n");
   }else{
   // If there is an even number of image pixels, supersample the innermost nsupsamppix x nsupsamppix region:
       nsupsamppix = 4;
