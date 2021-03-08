@@ -1000,6 +1000,12 @@ exit(1);
       warning("No supplied pops values, and par->nSolveIters <= par->nSolveItersDone.");
     }
   }
+  
+  if(!silent){
+    if(par->nSolveIters>1 && par->useEP < 2){
+      warning("You have requested par->nSolveIters > 1 but the requested photon trapping method (useEP < 2) requires only a single iteration.");
+    }
+  }
 
   /* Allocate moldata array.
   */
