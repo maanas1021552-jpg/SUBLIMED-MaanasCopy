@@ -860,7 +860,7 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
             p[l * NEQ + k] = p[l * NEQ + k] + md[ispec].gir[l*md[ispec].nlev+k];
         }
 
-   //Radiation trapping using the Escape Probaility method
+   //Radiation trapping using the Escape Probability method
    if(par->useEP==1){ 
    double tau, beta, molDens[par->nSpecies];
 
