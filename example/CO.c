@@ -29,10 +29,10 @@ input(inputPars *par, image *img){
   par->moldatfile[0]  = "CO.dat";
   par->girdatfile[0]  = "g_co_1au_new4.dat";
   par->lte_only         = 0;
+  par->girScale = 1.0;
 
-  par->nSolveIters  = 8;
+  par->nSolveIters  = 1;
   par->outputfile	= "CO.pop";
-  par->binoutputfile    = "restart.pop";
   par->gridfile         = "grid.vtk";
 
   par->collPartIds[0]   = 2;
