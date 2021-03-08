@@ -880,8 +880,6 @@ getTransitionRates(molData *md, int ispec, struct grid *gp, int id, configInfo *
       }else if (tau<0.0){ 
         beta = (1 - exp(-tau)) / tau;
       }
-      
-      printf("beta = %.5f\n",beta);    
 
       p[upper * NEQ + lower] = p[upper * NEQ + lower] + A[li]*beta;
 
