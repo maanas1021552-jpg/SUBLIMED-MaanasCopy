@@ -9,6 +9,7 @@ CVODE
     - make
     - make install
 CFITSIO
+GSL
 
 Set up the paths to the library and header files in Makefile.defs and Makefile 
 
