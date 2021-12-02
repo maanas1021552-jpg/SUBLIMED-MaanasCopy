@@ -1,0 +1,17 @@
+Prerequeisites:
+
+QHULL
+CVODE 
+    - Need to install using cmake3
+    - Download and extract cvode package
+    - cd in, and make directories sundials/builddir, sundials/srcdir, sundials/instdir
+    - go into sundials/builddir and run > cmake3 ../../
+    - make
+    - make install
+CFITSIO
+
+Set up the paths to the library and header files in Makefile.defs and Makefile 
+
+
+
+
