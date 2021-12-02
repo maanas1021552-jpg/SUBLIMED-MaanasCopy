@@ -12,7 +12,7 @@ After installation of the required gsl, qhull and cvode (SUNDIALS) libraries, re
 
 > sublimed -f -n -p <#threads> model.c
 
-(-n means libncurses will not be required. Note: serial nature of the time-dependent integrator means multithreading will not actually have much effect).
+(-n means libncurses will not be required. Note: serial nature of the time-dependent integrator means multithreading does not speed up the excitation calculation.).
 
 To generate a reliable coma image, care needs to be taken to correctly set the par->radius parameter in model.c to capture all the expected emission (this will vary depending on the molecule, coma and viewing geometry). The channel spacing (velres) needs to be small enough (around 0.1 km/s or less) to properly sample the spectral line profile, even if the velocity information is later discarded. 
 
