@@ -33,7 +33,7 @@ input(inputPars *par, image *img){
 
   par->nSolveIters  = 1;
   par->outputfile	= "CO.pop";
-  par->gridfile         = "grid.vtk";
+  par->gridfile         = "grid.vtu";
 
   par->collPartIds[0]   = 2;
   par->collPartIds[1]   = 3;
