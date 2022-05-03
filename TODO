@@ -4,4 +4,4 @@ Create MODIFICATIONS.txt file
 New functionality required:
 ***************************
 
-1. Enable coma asymmetry. Required changes will include the ability to specify n angular (conical) regions with unique outflow velocity and production rate. CVODE will therefore need to be called n times, and the resulting populations from each run need to be assigned to the relevant grid cells (within each respective predefined conical region), before raytracing. In the first instance, 2 conical regions will be sufficient.
+1. Enable arbitrary number of conical trajectories. Ideally, allow their boundaries to be defined by a multi-faceted shape model (but that would probably require an overhaul of the gridding and raytracing methodologies).
