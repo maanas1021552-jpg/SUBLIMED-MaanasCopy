@@ -2,7 +2,7 @@
 
 SUBlimated cometary gases in LIME (Dynamical version)
 
-This is SUBLIMED, a 3D radiative transfer code for outflowing exospheres from small icy bodies, by Martin Cordiner, Miguel de Val Borro, Nathan Roth and Emmanuel Garcia-Berrios (2024). For further details, see [Cordiner et al. (2022)](https://doi.org/10.3847/1538-4357/ac5893) and [Cordiner et al. (2023)](https:/doi.org/10.3847/1538-4357/ace0bc).
+This is SUBLIMED, a 3D radiative transfer code for outflowing exospheres from small icy bodies, by Martin Cordiner, Miguel de Val Borro, Nathan Roth and Emmanuel Garcia-Berrios (2024). For further details, see [Cordiner et al. (2022)](https://doi.org/10.3847/1538-4357/ac5893) and [Cordiner et al. (2023)](https://doi.org/10.3847/1538-4357/ace0bc).
  
 
 SUBLIMED is based on LIME (LIne Modeling Engine) version 1.9.3 by Christian Brinch (2006-2014) and the LIME development team (2015-2018). Main changes from the original LIME code include (1) switching from the static (GSL) solver to a time-dependent (CVODE) solver, which allows the dynamical nature of the cometary outflow to be properly simulated. Equations of statistical equilibrium in solver.c have been restructured as time-dependent differential equations (variable outflow velocity is allowed). (2) Electron collision rates are added to the differential equations; analytic electron densities and temperatures are generated at runtime. (3) The raytracing routine in raytrace.c has been augmented to provide improved (evenly-weighted) sampling in the central image pixels to account for the strong, compact, central brightness peak of a typical coma or jet. (4) For photon trapping, the escape probability approximation has been implemented to allow faster runtime, invoked using par->useEP=1.
