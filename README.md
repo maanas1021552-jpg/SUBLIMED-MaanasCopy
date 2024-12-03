@@ -2,7 +2,8 @@
 
 SUBlimated cometary gases in LIME (Dynamical version)
 
-This is SUBLIMED, a 3D radiative transfer code for outflowing exospheres from small icy bodies, by Martin Cordiner, Miguel de Val Borro, Nathan Roth and Emmanuel Garcia-Berrios (2024). 
+This is SUBLIMED, a 3D radiative transfer code for outflowing exospheres from small icy bodies, by Martin Cordiner, Miguel de Val Borro, Nathan Roth and Emmanuel Garcia-Berrios (2024). For further details see [Cordiner et al. 2022](https://doi.org/10.3847/1538-4357/ac5893).
+ 
 
 SUBLIMED is based on LIME (LIne Modeling Engine) version 1.9.3 by Christian Brinch (2006-2014) and the LIME development team (2015-2018). Main changes from the original LIME code include (1) switching from the static (GSL) solver to a time-dependent (CVODE) solver, which allows the dynamical nature of the cometary outflow to be properly simulated. Equations of statistical equilibrium in solver.c have been restructured as time-dependent differential equations, assuming constant outflow velocity. (2) Electron collision rates are added to the differential equations; analytic electron densities and temperatures are generated at runtime. (3) The raytracing routine in raytrace.c has been altered to provide sufficient (evenly-weighted) sampling in the central image pixels to account for the strong, compact, central brightness peak of the coma. (4) For photon trapping, the escape probability approximation has been implemented to allow faster runtime, invoked using par->useEP=1.
 
@@ -23,3 +24,5 @@ Experience has shown that a reasonably good model can be produced with par->pInt
 If no collision rates are supplied in the input LAMDA molecular data file, the "thermalizing collisions" approximation [(Crovisier 1987)](https://ui.adsabs.harvard.edu/abs/1987A%26AS...68..223C/abstract) will be used, with an average collisional cross section (XSEC) specified in the constants.h file. After each collision, the molecule's excitation state will then be statistically redistributed according to the Boltzmann distribution at the local kinetic temperature.
 
 Note: J_nu photon trapping calculation is currently broken (needs a complete overhaul, so do not use par->useEP=2) --- use the standard escape probability method instead (par->useEP=1).
+
+If you use this code in a published work, please reference [Cordiner, M. A., Coulson, I. M., Garcia-Berrios, E. et al. 2022, Astrophysical Journal, Volume 929, id.38](https://doi.org/10.3847/1538-4357/ac5893).
