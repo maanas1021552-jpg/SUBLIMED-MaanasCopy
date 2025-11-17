@@ -1,11 +1,11 @@
 #include "lime.h"
 
 double Q1=6.2e+28;
-double Q2=6.2e+28;
+double Q2=3.5e+28;
 double abund = 0.2;
-double tkin1 = 26.000000;
-double tkin2 = 26.000000;
-double vexp1 = 560.000000;
+double tkin1 = 35.000000;
+double tkin2 = 35.000000;
+double vexp1 = 760.000000;
 double vexp2 = 560.000000;
 double rnuc = 2500.000000;
 double openAngle = 1.0;
@@ -40,7 +40,7 @@ input(inputPars *par, image *img){
   par->nMolWeights[0]   = 1.0;
   par->xne = 1.0;
   par->traceRayAlgorithm = 0;
-  par->fixRNG = 0;
+  par->fixRNG = 1;
 
   img[0].velres		= 50.000000;   // Channel resolution in m/s
   img[0].nchan		= 50;	  // Number of channels
@@ -49,7 +49,7 @@ input(inputPars *par, image *img){
   img[0].imgres		= 0.5;	  // Resolution in arc seconds
   img[0].distance	= 1.47 * AU; // source distance in m
   img[0].unit		= 0;	  // 0:Kelvin 1:Jansky/pixel 2:SI 3:Lsun/pixel 4:tau
-  img[0].filename	= "test_CO_fixRNG2.fits"; // Output filename
+  img[0].filename	= "CO_example.fits"; // Output filename
 
 }
 
@@ -119,7 +119,7 @@ molNumDensity(double x, double y, double z, double *nmol){
 
 void
 doppler(double x, double y, double z, double *doppler){
-  *doppler = 35.421603;
+  *doppler = 0.0;
 }
 
 /******************************************************************************/
