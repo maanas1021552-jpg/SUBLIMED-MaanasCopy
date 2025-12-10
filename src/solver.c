@@ -979,7 +979,6 @@ LTE(configInfo *par, struct grid *gp, molData *md){
       lteOnePoint(md, ispec, gp[id].t[0], gp[id].mol[ispec].pops);
     }
   }
-  if(par->outputfile) popsout(par,gp,md);
 
 }
 
@@ -1298,7 +1297,6 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
 
    /* Initialize populations with Boltzmann distribution (assuming LTE) */
    if (par->useEP != 2) LTE(par,gp,md); //If useEp ==2, then the populations have already been initialized, and we don't want to override them
-   if(par->outputfile && par->useEP != 2) popsout(par,gp,md);
 
    defaultErrorHandler = gsl_set_error_handler_off();
 
@@ -1363,7 +1361,6 @@ levelPops(molData *md, configInfo *par, struct grid *gp, int *popsdone, double *
       freeGridPointData(par->nSpecies, mp[i]);
       free(halfFirstDs[i]);
     }
-    if(par->outputfile != NULL) popsout(par,gp,md);
 
   if(par->useEP == 2) freeMolsWithBlends(blends.mols, blends.numMolsWithBlends);
   for (i=0;i<par->pIntensity;i++)
