@@ -1,0 +1,9 @@
+example/test_run.x:
+	/opt/homebrew/opt/sundials/lib/libsundials_cvode.7.dylib (compatibility version 7.0.0, current version 7.7.0)
+	/opt/homebrew/opt/sundials/lib/libsundials_nvecserial.7.dylib (compatibility version 7.0.0, current version 7.7.0)
+	/opt/homebrew/opt/sundials/lib/libsundials_core.7.dylib (compatibility version 7.0.0, current version 7.7.0)
+	/opt/homebrew/opt/gsl/lib/libgsl.28.dylib (compatibility version 29.0.0, current version 29.0.0)
+	/opt/homebrew/opt/gsl/lib/libgslcblas.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/opt/homebrew/opt/cfitsio/lib/libcfitsio.10.dylib (compatibility version 10.0.0, current version 4.6.4)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)
+	/usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
