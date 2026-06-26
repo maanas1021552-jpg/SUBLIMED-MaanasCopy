@@ -985,7 +985,8 @@ LTE(configInfo *par, struct grid *gp, molData *md){
 
 /*....................................................................*/
 /* Sets the Differential Equation (Pdot) to be solved by CVode */
-int f(realtype radius, N_Vector P, N_Vector Pdot, void *data){
+/* SUNDIALS 6.0+: Use 'sunrealtype' (formerly 'realtype') - import from sundials_types.h */
+int f(sunrealtype radius, N_Vector P, N_Vector Pdot, void *data){
 
   int i, j, NEQ, id;
   struct transitionParams *user_data = data;
@@ -1026,7 +1027,8 @@ int f(realtype radius, N_Vector P, N_Vector Pdot, void *data){
   return(0);
 }
 
-void reduceTol(N_Vector abstol, realtype reltol, void *cvode_mem, double factor, int NEQ){
+/* SUNDIALS 6.0+: Use 'sunrealtype' (formerly 'realtype') - import from sundials_types.h */
+void reduceTol(N_Vector abstol, sunrealtype reltol, void *cvode_mem, double factor, int NEQ){
    printf("INFO: Reducing RTOL and ATOL by 0.1 and restarting CVODE\n");
    int i, retval;
 
@@ -1048,11 +1050,14 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   , struct blendInfo blends, int *nextMolWithBlend, gridPointData **mp\
   , double **halfFirstDs, int *nMaserWarnings,struct grid *gp3D,int gp_pIntensity, int gp_ncell, double *radii, int subGrid_pIntensity, int *gp_sorter, int subGrid){
   int id;
-  realtype reltol, t;
+  /* SUNDIALS 6.0+: Use 'sunrealtype' (formerly 'realtype') - import from sundials_types.h */
+  sunrealtype reltol, t;
   N_Vector P, abstol;
   SUNMatrix sunMatrix;
   SUNLinearSolver LS;
   void *cvode_mem;
+  /* SUNDIALS 6.0+: SUNContext required for all SUNDIALS operations */
+  SUNContext sunctx;
   int i,j,k, cvodeErrs = 0;;
   int retval,cvstatus,index;
   int ncell = par->ncell, pIntensity = par->pIntensity;
@@ -1108,10 +1113,15 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
   LS = NULL;
   cvode_mem = NULL;
 
+  /* SUNDIALS 6.0+: Initialize SUNContext before creating any SUNDIALS objects */
+  retval = SUNContext_Create(NULL, &sunctx);
+  if (check_retval(&retval, "SUNContext_Create", 1)) return;
+
   /* Create serial vector of length NEQ for I.C. and abstol */
-  P = N_VNew_Serial(NEQ);
+  /* SUNDIALS 6.0+: N_VNew_Serial now requires SUNContext as second argument */
+  P = N_VNew_Serial(NEQ, sunctx);
   if (check_retval((void *)P, "N_VNew_Serial", 0)) return;
-  abstol = N_VNew_Serial(NEQ); 
+  abstol = N_VNew_Serial(NEQ, sunctx); 
   if (check_retval((void *)abstol, "N_VNew_Serial", 0)) return;
 
   /* Set the scalar relative tolerance */
@@ -1125,7 +1135,8 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
 
   /* Call CVodeCreate to create the solver memory and specify the 
   * Backward Differentiation Formula */
-  cvode_mem = CVodeCreate(CV_BDF);
+  /* SUNDIALS 6.0+: CVodeCreate now requires SUNContext as second argument */
+  cvode_mem = CVodeCreate(CV_BDF, sunctx);
   if (check_retval((void *)cvode_mem, "CVodeCreate", 0)) return;
 
   /* Call CVodeInit to initialize the integrator memory and specify the
@@ -1146,11 +1157,13 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
     if (check_retval(&retval, "CVodeSetMaxNumSteps", 1)) return;
 
   /* Create dense SUNMatrix for use in linear solves */
-  sunMatrix = SUNDenseMatrix(NEQ, NEQ);
+  /* SUNDIALS 6.0+: SUNDenseMatrix now requires SUNContext as third argument */
+  sunMatrix = SUNDenseMatrix(NEQ, NEQ, sunctx);
   if(check_retval((void *)sunMatrix, "SUNDenseMatrix", 0)) return;
 
   /* Create dense SUNLinearSolver object for use by CVode */
-  LS = SUNLinSol_Dense(P, sunMatrix);
+  /* SUNDIALS 6.0+: SUNLinSol_Dense now requires SUNContext as third argument */
+  LS = SUNLinSol_Dense(P, sunMatrix, sunctx);
   if(check_retval((void *)LS, "SUNLinSol_Dense", 0)) return;
 
   /* Call CVodeSetLinearSolver to attach the matrix and linear solver to CVode */
@@ -1185,8 +1198,9 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
          if (check_retval(&retval, "CVodeInit", 1)) printf("Failed to reinitialize CVODE\n");
          CVodeSetUserData(cvode_mem, &user_data);
          CVodeSetMaxNumSteps(cvode_mem, 5000);
-         sunMatrix = SUNDenseMatrix(NEQ, NEQ);
-         LS = SUNLinSol_Dense(P, sunMatrix);
+         /* SUNDIALS 6.0+: Add SUNContext argument to SUNDenseMatrix and SUNLinSol_Dense */
+         sunMatrix = SUNDenseMatrix(NEQ, NEQ, sunctx);
+         LS = SUNLinSol_Dense(P, sunMatrix, sunctx);
          CVodeSetLinearSolver(cvode_mem, LS, sunMatrix);
          CVodeSetJacFn(cvode_mem, NULL);
          reduceTol(abstol, reltol, cvode_mem, 0.1, NEQ);
@@ -1231,6 +1245,9 @@ solveStatEq(struct grid *gp, molData *md, const int ispec, configInfo *par\
 
   /* Free the matrix memory */
   SUNMatDestroy(sunMatrix);
+
+  /* SUNDIALS 6.0+: Free the SUNContext */
+  SUNContext_Free(&sunctx);
   
   gsl_vector_free(newpop);
   

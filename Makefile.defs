@@ -1,6 +1,40 @@
-LIB_QHULL = qhull
-CCFLAGS += -I/usr/include/cfitsio
-CCFLAGS += -I/Users/mcordine/Install/cvode-5.3.0/sundials/instdir/include
-LDFLAGS += -Wl,-rpath,/Users/mcordine/Install/cvode-5.3.0/sundials/instdir/lib
-LIBS += -L/Users/mcordine/Install/cvode-5.3.0/sundials/instdir/lib
-CC      = /opt/local/bin/gcc-mp-8 -fopenmp
+LIB_QHULL = qhullstatic
+SUNDIALS_SERIAL_PREFIX ?= $(HOME)/local/sundials-serial
+
+CCFLAGS += -I/opt/homebrew/include
+CCFLAGS += -I/opt/homebrew/opt/gsl/include
+CCFLAGS += -I/opt/homebrew/opt/qhull/include/libqhull
+CCFLAGS += -I$(SUNDIALS_SERIAL_PREFIX)/include
+CCFLAGS += -I/opt/homebrew/opt/cfitsio/include
+CCFLAGS += -I. -I./src
+
+LDFLAGS += -Wl,-rpath,$(SUNDIALS_SERIAL_PREFIX)/lib
+LDFLAGS += -Wl,-rpath,/opt/homebrew/lib
+
+LIBS += -L$(SUNDIALS_SERIAL_PREFIX)/lib
+LIBS += -L/opt/homebrew/lib
+LIBS += -L/opt/homebrew/opt/gsl/lib
+LIBS += -L/opt/homebrew/opt/qhull/lib
+LIBS += -L/opt/homebrew/opt/cfitsio/lib
+
+LIBS += $(SUNDIALS_SERIAL_PREFIX)/lib/libsundials_cvode.dylib
+LIBS += $(SUNDIALS_SERIAL_PREFIX)/lib/libsundials_nvecserial.dylib
+LIBS += $(SUNDIALS_SERIAL_PREFIX)/lib/libsundials_core.dylib
+
+# OpenMP flags: use -fopenmp for GCC, and libomp flags for Apple Clang.
+ifeq ($(findstring gcc,$(CC)),gcc)
+	CCFLAGS += -fopenmp
+	LDFLAGS += -fopenmp
+endif
+
+ifeq ($(findstring clang,$(CC)),clang)
+	CCFLAGS += -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
+	LDFLAGS += -L/opt/homebrew/opt/libomp/lib -Wl,-rpath,/opt/homebrew/opt/libomp/lib
+	LIBS += -lomp
+endif
+
+# Link common numerical and FITS libraries provided by Homebrew.
+LIBS += -lgsl -lgslcblas -lcfitsio -lm
+
+# Use Apple Clang by default; the OpenMP flags below add libomp support.
+CC = clang

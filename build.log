@@ -1,0 +1,29 @@
+rm -f /Users/manna/ResearchCode/sublimed/src/*.o
+rm -f gridconvert
+rm -f *~ /Users/manna/ResearchCode/sublimed/src/*~
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/aux.o -c src/aux.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/collparts.o -c src/collparts.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/defaults.o -c src/defaults.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/fastexp.o -c src/fastexp.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/frees.o -c src/frees.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/grid2fits.o -c src/grid2fits.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/grid.o -c src/grid.c
+gcc -I/opt/homebrew/include -I/opt/homebrew/opt/gsl/include -I/opt/homebrew/opt/qhull/include/libqhull -I/Users/manna/local/sundials-serial/include -I/opt/homebrew/opt/cfitsio/include -I. -I./src -fopenmp -O3 -falign-loops=16 -fno-strict-aliasing -I/include -I/include/libqhull -I/src -I/Users/manna/include -I/opt/local/include -I/opt/local/include/qhull -I/sw//include  -o src/gridio.o -c src/gridio.c
+clangclangclang: clangclangclangclang: : : clangerror: error: error: : : unsupported option '-fopenmp': unsupported option '-fopenmp'unsupported option '-fopenmp'error: error: 
+unsupported option '-fopenmp'error: : 
+unsupported option '-fopenmp'unsupported option '-fopenmp'error: 
+
+unsupported option '-fopenmp'
+
+error: unsupported option '-fopenmp'
+
+make: *** [src/gridio.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [src/collparts.o] Error 1
+make: *** [src/grid.o] Error 1
+make: *** [src/defaults.o] Error 1
+make: *** [src/grid2fits.o] Error 1
+make: *** [src/frees.o] Error 1
+make: *** [src/fastexp.o] Error 1
+make: *** [src/aux.o] Error 1
+2

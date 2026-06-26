@@ -1,0 +1,4 @@
+/Users/manna/local/sundials-serial/lib/libsundials_cvode.dylib:
+	/Users/manna/local/sundials-serial/lib/libsundials_cvode.7.dylib (compatibility version 7.0.0, current version 7.8.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)
+	/Users/manna/local/sundials-serial/lib/libsundials_core.7.dylib (compatibility version 7.0.0, current version 7.8.0)

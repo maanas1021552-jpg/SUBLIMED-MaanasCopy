@@ -13,6 +13,8 @@ Example input and output files are given in the example/ folder.
 
 After installation of the required gsl, qhull and cvode (SUNDIALS) libraries, recommend running the executable as follows:
 
+For macOS builds, use a non-MPI SUNDIALS install and Apple Clang with `libomp` so OpenMP is available without pulling in MPI-linked libraries. A serial SUNDIALS install can be built with CMake using `-DENABLE_MPI=OFF` and installed to a local prefix such as `$HOME/local/sundials-serial`, then referenced from `Makefile.defs`.
+
 > sublimed -f -n -p <#threads> model.c
 
 (-n means libncurses will not be required. Note: serial nature of the time-dependent integrator means multithreading does not speed up the excitation calculation.).

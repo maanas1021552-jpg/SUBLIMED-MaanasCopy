@@ -100,7 +100,8 @@ make -s EXTRACPPFLAGS="${cpp_flags}" MODELS=$WORKDIR/$1 TARGET=$WORKDIR/lime_$$.
 # USEHDF5="yes"
 make -s limeclean
 
-# Run the code
+# Run the code.
+# LIME's -p option controls threads, not MPI ranks, so prefer direct execution.
 popd >> /dev/null
 ./lime_$$.x
 rm -rf lime_$$.x
