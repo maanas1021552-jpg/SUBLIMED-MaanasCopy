@@ -97,7 +97,7 @@ ${TARGET}: ${OBJS} ${MODELO}
 ${OBJS} : ${INCS}
 ${CONV_OBJS} : ${CONVINCLUDES}
 
-${MODELO}: ${INCS}
+${MODELO}: ${INCS} ${MODELS}
 	${CC} ${CCFLAGS} ${CPPFLAGS} -o ${MODELO} -c ${MODELS}
 
 gridconvert : CPPFLAGS += -DNO_NCURSES

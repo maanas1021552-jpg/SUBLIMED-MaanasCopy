@@ -17,6 +17,10 @@ For macOS builds, use a non-MPI SUNDIALS install and Apple Clang with `libomp` s
 
 > sublimed -f -n -p <#threads> model.c
 
+The `sublimed` launcher now uses a cached precompiled executable in `.sublimed_cache/`, keyed by model path and build flags. This means normal reruns do not rebuild unless needed. Use `-r` to force a rebuild.
+
+For the supplied models `model.c` and `example/CO_Haser_NLTE.c`, key physical parameters are now read at runtime from `model.params` and `example/CO_Haser_NLTE.params` respectively. Edit those `.params` files to change values without recompiling. You can also point to any parameter file by setting `SUBLIMED_PARAM_FILE=/path/to/file.params`.
+
 (-n means libncurses will not be required. Note: serial nature of the time-dependent integrator means multithreading does not speed up the excitation calculation.).
 
 To generate a reliable coma image, care needs to be taken to correctly set the par->radius parameter in model.c to capture all the expected emission (this will vary depending on the molecule, coma and viewing geometry). The channel spacing (velres) needs to be small enough (around 0.1 km/s or less) to properly sample the spectral line profile, even if the velocity information is later discarded. 

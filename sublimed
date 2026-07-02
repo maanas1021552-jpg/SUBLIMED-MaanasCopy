@@ -28,6 +28,7 @@ function usage {
     echo "   -t           Compile with debugging and fixed RNG seeds"
     echo "   -n           Turn off ncurses output"
     echo "   -p NTHREADS  Run in parallel with NTHREADS threads (default: 1)"
+	echo "   -r           Force rebuild even if cached binary exists"
     echo ""
     echo "See <http://lime.readthedocs.org> for more information."
     echo "Report bugs to <http://github.com/lime-rt/lime/issues>."
@@ -37,10 +38,11 @@ function tip {
     echo "Try 'lime -h' for more information."
 }
 
-options=":Vfnstp:h"
+options=":Vfnstp:hr"
 cpp_flags=""
 verbose="yes"
 do_test="no"
+force_rebuild="no"
 
 while getopts ${options} opt; do
     case $opt in
@@ -68,6 +70,9 @@ while getopts ${options} opt; do
 		exit 1
 	    fi
 	    ;;
+	r)
+	    force_rebuild="yes"
+	    ;;
 	s)
 	    verbose="no"
 	    ;;
@@ -94,16 +99,34 @@ fi
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PATHTOLIME}/lib
 export WORKDIR=$PWD
 
-# Compile the code
+if ! command -v shasum >/dev/null 2>&1; then
+	echo "lime: error: shasum command not found" >&2
+	exit 1
+fi
+
+model_path="$WORKDIR/$1"
+if [ ! -f "$model_path" ]; then
+	echo "lime: error: model file '$1' not found" >&2
+	exit 1
+fi
+
+cache_dir="$WORKDIR/.sublimed_cache"
+mkdir -p "$cache_dir"
+
+cache_key=$(printf "%s|%s|%s|%s\n" "$model_path" "$cpp_flags" "$do_test" "$verbose" | shasum | awk '{print $1}')
+model_tag=$(basename "$1")
+model_tag=${model_tag%.c}
+target_bin="$cache_dir/${model_tag}_${cache_key}.x"
+
+# Compile the code if needed
 pushd ${PATHTOLIME} >> /dev/null
-make -s EXTRACPPFLAGS="${cpp_flags}" MODELS=$WORKDIR/$1 TARGET=$WORKDIR/lime_$$.x DOTEST=$do_test VERBOSE=$verbose
-# USEHDF5="yes"
-make -s limeclean
+if [ "$force_rebuild" = "yes" ] || [ ! -x "$target_bin" ]; then
+	make -s EXTRACPPFLAGS="${cpp_flags}" MODELS="$model_path" TARGET="$target_bin" DOTEST=$do_test VERBOSE=$verbose
+fi
 
 # Run the code.
 # LIME's -p option controls threads, not MPI ranks, so prefer direct execution.
 popd >> /dev/null
-./lime_$$.x
-rm -rf lime_$$.x
+"$target_bin"
 
 exit 0

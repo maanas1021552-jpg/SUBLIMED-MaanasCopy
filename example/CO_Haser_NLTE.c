@@ -1,4 +1,5 @@
 #include "lime.h"
+#include "runtime_params.h"
 
 double Q1=6.2e+28;
 double Q2=3.5e+28;
@@ -15,10 +16,34 @@ double betamol = 2.2e-07;
 
 double pi = 3.14159265358979323846;
 
+static int runtime_params_loaded = 0;
+
+static void apply_param(const char *key, double value){
+  if(strcmp(key, "Q1") == 0) Q1 = value;
+  else if(strcmp(key, "Q2") == 0) Q2 = value;
+  else if(strcmp(key, "abund") == 0) abund = value;
+  else if(strcmp(key, "tkin1") == 0) tkin1 = value;
+  else if(strcmp(key, "tkin2") == 0) tkin2 = value;
+  else if(strcmp(key, "vexp1") == 0) vexp1 = value;
+  else if(strcmp(key, "vexp2") == 0) vexp2 = value;
+  else if(strcmp(key, "rnuc") == 0) rnuc = value;
+  else if(strcmp(key, "openAngle") == 0) openAngle = value;
+  else if(strcmp(key, "betamain") == 0) betamain = value;
+  else if(strcmp(key, "betamol") == 0) betamol = value;
+}
+
+static void load_runtime_params(void){
+  if(runtime_params_loaded) return;
+  runtime_params_loaded = 1;
+  runtime_params_load(__FILE__, "CO_Haser_NLTE.params", apply_param);
+}
+
 /******************************************************************************/
 
 void
 input(inputPars *par, image *img){
+  load_runtime_params();
+
   par->useEP       = 0;
   par->Q1 = Q1;
   par->Q2 = Q2;

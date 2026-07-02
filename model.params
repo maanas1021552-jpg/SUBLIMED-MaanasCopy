@@ -1,0 +1,13 @@
+# Runtime parameters for model.c
+# Override file location by setting SUBLIMED_PARAM_FILE=/path/to/params
+Q1 = 6.2e28
+Q2 = 3.5e28
+abund = 0.2
+tkin1 = 35.0
+tkin2 = 35.0
+vexp1 = 760.0
+vexp2 = 560.0
+rnuc = 2500.0
+openAngle = 1.0
+betamain = 3.5e-06
+betamol = 2.2e-07
