@@ -1,0 +1,46 @@
+# Runtime parameters for the built-in src/model.c
+# Override file location by setting SUBLIMED_PARAM_FILE=/path/to/params
+
+# Coma physics
+Q1 = 6.2e28
+Q2 = 3.5e28
+abund = 0.2
+tkin1 = 35.0
+tkin2 = 35.0
+vexp1 = 760.0
+vexp2 = 560.0
+rnuc = 2500.0
+openAngle = 1.0
+betamain = 3.5e-06
+betamol = 2.2e-07
+
+# Solver and grid
+useEP = 0
+rHelio = 1.85
+radius = 1e9
+minScale = 2500.0
+pIntensity = 10000
+sinkPoints = 500
+moldatfile = co.dat
+girdatfile = g_co_1au_new4.dat
+girScale = 0.292
+colliScale = 1.0
+lte_only = 0
+outputfile = CO_NLTE.pop
+binoutputfile = restart.pop
+gridfile = grid.vtk
+collPartId = 2
+nMolWeight = 1.0
+xne = 1.0
+traceRayAlgorithm = 0
+fixRNG = 1
+
+# FITS image
+velres = 50.0
+nchan = 50
+trans = 2
+pxls = 512
+imgres = 0.5
+distanceAU = 1.47
+unit = 0
+imageFilename = CO_example.fits
